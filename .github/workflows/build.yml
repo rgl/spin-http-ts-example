@@ -1,0 +1,22 @@
+name: build
+on:
+  - push
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    name: Build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - name: Setup spin
+        uses: fermyon/actions/spin/setup@v1
+        with:
+          version: v2.1.0
+          plugins: js2wasm
+      - name: Install build dependencies
+        run: npm ci
+      - name: Build
+        run: spin build

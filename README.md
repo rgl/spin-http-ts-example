@@ -32,3 +32,4 @@ xdg-open http://localhost:3000
 * [Spin JS/TS SDK Examples](https://github.com/fermyon/spin-js-sdk/tree/main/examples)
 * [Spin JS/TS @fermyon/spin-sdk NPM package](https://www.npmjs.com/package/@fermyon/spin-sdk)
 * [Building Spin Components in JavaScript](https://developer.fermyon.com/spin/v2/javascript-components)
+* [Done icon](https://icons8.com/icon/uw-X2j32n7Xp/done)

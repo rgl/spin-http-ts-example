@@ -35,6 +35,7 @@ export const handleRequest: HandleRequest = async (request: HttpRequest): Promis
 <html>
   <head>
     <title>Hello, World!</title>
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAsklEQVR4nNXRSwrCQAwG4NFLeB9voIiINNl4BZPBVUUXVtyI4KbJrLyIl3Ljg4otFSlOcWbnvw1fkskY858pTAfFJmmadiMxH1G5AKVTDD5UmK/o5oMgD0rbaIxKGy9OcttvnSy0qzEIDxtF3pdFoeV3zJkXl9Mdz0DpUTXhrIHXP70ZxE5R6fbZBJVWQQcDJUDh+wuh8Ll1bV/Q8fi9ScxXlU1yHoHSJQrXmciiF41D8wTn54OWVxRsfQAAAABJRU5ErkJggg==" />
   </head>
   <body>
     <p>Hello, World!</p>

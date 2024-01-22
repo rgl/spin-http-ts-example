@@ -1,0 +1,3 @@
+*
+!target/spin.toml
+!target/*.wasm

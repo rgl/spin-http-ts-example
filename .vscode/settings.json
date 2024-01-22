@@ -1,5 +1,10 @@
 {
     "cSpell.words": [
-        "fermyon"
+        "containerd",
+        "crictl",
+        "fermyon",
+        "inspectp",
+        "runp",
+        "stopp"
     ]
 }

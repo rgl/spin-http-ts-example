@@ -1,35 +1,35 @@
 #!/bin/bash
 set -euxo pipefail
 
+HELLO_SOURCE_URL="https://github.com/${GITHUB_REPOSITORY:-rgl/spin-http-ts-example}.git"
+if [[ "${GITHUB_REF:-v0.0.0-dev}" =~ \/v([0-9]+(\.[0-9]+)+(-.+)?) ]]; then
+  HELLO_VERSION="${BASH_REMATCH[1]}"
+else
+  HELLO_VERSION='0.0.0-dev'
+fi
+HELLO_REVISION="${GITHUB_SHA:-0000000000000000000000000000000000000000}"
+
 function dependencies {
   npm ci
 }
 
 function build {
+  sed -i -E "s,( sourceUrl = ).+,\1\"$HELLO_SOURCE_URL\";,g" src/meta.ts
+  sed -i -E "s,( version = ).+,\1\"$HELLO_VERSION\";,g" src/meta.ts
+  sed -i -E "s,( revision = ).+,\1\"$HELLO_REVISION\";,g" src/meta.ts
   spin build
   sed -E 's,/?target/,,g' spin.toml >target/spin.toml
 }
 
 function release {
-  local hello_source_url="https://github.com/$GITHUB_REPOSITORY"
-
-  if [[ "$GITHUB_REF" =~ \/v([0-9]+(\.[0-9]+)+(-.+)?) ]]; then
-    local hello_version="${BASH_REMATCH[1]}"
-  else
-    echo "ERROR: Unable to extract semver version from GITHUB_REF."
-    exit 1
-  fi
-
-  local hello_revision="$GITHUB_SHA"
-
-  local image="ghcr.io/$GITHUB_REPOSITORY:$hello_version"
+  local image="ghcr.io/$GITHUB_REPOSITORY:$HELLO_VERSION"
 
   # publish the application as a container image or as an oci image artifact.
   if false; then
     docker build \
-      --build-arg "HELLO_SOURCE_URL=$hello_source_url" \
-      --build-arg "HELLO_VERSION=$hello_version" \
-      --build-arg "HELLO_REVISION=$hello_revision" \
+      --build-arg "HELLO_SOURCE_URL=$HELLO_SOURCE_URL" \
+      --build-arg "HELLO_VERSION=$HELLO_VERSION" \
+      --build-arg "HELLO_REVISION=$HELLO_REVISION" \
       -t "$image" \
       .
     docker push "$image"

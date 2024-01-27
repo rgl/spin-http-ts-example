@@ -1,4 +1,5 @@
 import { HandleRequest, HttpRequest, HttpResponse } from "@fermyon/spin-sdk";
+import { version, revision, sourceUrl } from "./meta";
 
 const encoder = new TextEncoder();
 
@@ -36,9 +37,35 @@ export const handleRequest: HandleRequest = async (request: HttpRequest): Promis
   <head>
     <title>Hello, World!</title>
     <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAsklEQVR4nNXRSwrCQAwG4NFLeB9voIiINNl4BZPBVUUXVtyI4KbJrLyIl3Ljg4otFSlOcWbnvw1fkskY858pTAfFJmmadiMxH1G5AKVTDD5UmK/o5oMgD0rbaIxKGy9OcttvnSy0qzEIDxtF3pdFoeV3zJkXl9Mdz0DpUTXhrIHXP70ZxE5R6fbZBJVWQQcDJUDh+wuh8Ll1bV/Q8fi9ScxXlU1yHoHSJQrXmciiF41D8wTn54OWVxRsfQAAAABJRU5ErkJggg==" />
+    <style>
+      body {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        text-align: center;
+        font-size: 27px;
+      }
+      .version {
+        color: #aaa;
+        font-style: italic;
+        font-size: 0.6em;
+      }
+      .version a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .version a:hover {
+        text-decoration: underline;
+      }
+    </style>
   </head>
   <body>
-    <p>Hello, World!</p>
+    <div>
+      <p>Hello, World!</p>
+      <p class="version">v${version}+${revision}<br/><a href="${sourceUrl}">${sourceUrl}</a></p>
+    </div>
   </body>
 </html>
 `);

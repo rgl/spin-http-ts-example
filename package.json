@@ -1,6 +1,6 @@
 {
   "name": "spin-http-ts-example",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Example Spin HTTP Application written in TypeScript",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "devDependencies": {
     "ts-loader": "^9.5.1",
     "typescript": "^4.9.5",
-    "webpack": "^5.90.0",
+    "webpack": "^5.90.1",
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {

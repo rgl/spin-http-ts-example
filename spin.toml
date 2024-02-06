@@ -3,7 +3,7 @@ authors = ["Rui Lopes <rgl@ruilopes.com>"]
 description = "Example Spin HTTP Application written in TypeScript"
 name = "spin-http-ts-example"
 trigger = { type = "http", base = "/" }
-version = "0.2.0"
+version = "0.3.0"
 
 [[component]]
 id = "spin-http-ts-example"

@@ -29,7 +29,7 @@ export const handleRequest: HandleRequest = async (request: HttpRequest): Promis
   if (uri.pathname != "/") {
     return text(404, "Not Found.");
   }
-  if (request.method != "GET") {
+  if (request.method != "GET" && request.method != "HEAD") {
     return text(405, "Not Allowed.");
   }
   return html(200, `<!DOCTYPE html>

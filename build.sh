@@ -1,13 +1,19 @@
 #!/bin/bash
 set -euxo pipefail
 
-HELLO_SOURCE_URL="https://github.com/${GITHUB_REPOSITORY:-rgl/spin-http-ts-example}.git"
+if [ ! -v CI ]; then
+  GITHUB_REPOSITORY='rgl/spin-http-ts-example'
+fi
+
+HELLO_SOURCE_URL="https://github.com/${GITHUB_REPOSITORY:-rgl/spin-http-ts-example}"
 if [[ "${GITHUB_REF:-v0.0.0-dev}" =~ \/v([0-9]+(\.[0-9]+)+(-.+)?) ]]; then
   HELLO_VERSION="${BASH_REMATCH[1]}"
 else
   HELLO_VERSION='0.0.0-dev'
 fi
 HELLO_REVISION="${GITHUB_SHA:-0000000000000000000000000000000000000000}"
+HELLO_DESCRIPTION="$(jq -r .description package.json)"
+HELLO_LICENSE="$(jq -r .license package.json)"
 
 function dependencies {
   npm ci
@@ -24,31 +30,33 @@ function build {
 function release {
   local image="ghcr.io/$GITHUB_REPOSITORY:$HELLO_VERSION"
 
-  # publish the application as a container image or as an oci image artifact.
-  if false; then
+  # publish the application as a docker container image or as an oci image artifact.
+  if true; then
     docker build \
-      --build-arg "HELLO_SOURCE_URL=$HELLO_SOURCE_URL" \
-      --build-arg "HELLO_VERSION=$HELLO_VERSION" \
-      --build-arg "HELLO_REVISION=$HELLO_REVISION" \
+      --label "org.opencontainers.image.source=$HELLO_SOURCE_URL" \
+      --label "org.opencontainers.image.version=$HELLO_VERSION" \
+      --label "org.opencontainers.image.revision=$HELLO_REVISION" \
+      --label "org.opencontainers.image.description=$HELLO_DESCRIPTION" \
+      --label "org.opencontainers.image.licenses=$HELLO_LICENSE" \
       -t "$image" \
       .
     docker push "$image"
   else
-    # NB spin registry push will create an oci image artifact. thou, it does not
-    #    seem to attach any metadata to the oci image artifact. we can see a
-    #    warning about a missing description metadata when you click the latest
-    #    package version at:
-    #       https://github.com/rgl/spin-http-ts-example/pkgs/container/spin-http-ts-example
-    #    TODO review this after https://github.com/fermyon/spin/issues/2236 is
-    #         addressed.
-    spin registry push "$image"
+    # TODO https://github.com/fermyon/spin/issues/2236.
+    spin registry push \
+      --annotation "org.opencontainers.image.source=$HELLO_SOURCE_URL" \
+      --annotation "org.opencontainers.image.version=$HELLO_VERSION" \
+      --annotation "org.opencontainers.image.revision=$HELLO_REVISION" \
+      --annotation "org.opencontainers.image.description=$HELLO_DESCRIPTION" \
+      --annotation "org.opencontainers.image.licenses=$HELLO_LICENSE" \
+      "$image"
   fi
 
   # create the release binary artifact.
   rm -rf dist && install -d dist
   cp target/* dist/
   cd dist
-  tar czf "$(basename "$GITHUB_REPOSITORY").tgz" *
+  tar czf "$(basename "$HELLO_SOURCE_URL").tgz" *
   echo "sha256 $(sha256sum *.tgz)" >release-notes.md
   cd ..
 }

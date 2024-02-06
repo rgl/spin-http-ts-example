@@ -14,6 +14,9 @@ fi
 HELLO_REVISION="${GITHUB_SHA:-0000000000000000000000000000000000000000}"
 HELLO_DESCRIPTION="$(jq -r .description package.json)"
 HELLO_LICENSE="$(jq -r .license package.json)"
+HELLO_AUTHOR_NAME="$(jq -r .author.name package.json)"
+HELLO_AUTHOR_URL="$(jq -r .author.url package.json)"
+HELLO_VENDOR="$(jq -r .author.url package.json | perl -ne 'print $1 if /\/\/(.+)/')"
 
 function dependencies {
   npm ci
@@ -23,6 +26,8 @@ function build {
   sed -i -E "s,( sourceUrl = ).+,\1\"$HELLO_SOURCE_URL\";,g" src/meta.ts
   sed -i -E "s,( version = ).+,\1\"$HELLO_VERSION\";,g" src/meta.ts
   sed -i -E "s,( revision = ).+,\1\"$HELLO_REVISION\";,g" src/meta.ts
+  sed -i -E "s,( authorName = ).+,\1\"$HELLO_AUTHOR_NAME\";,g" src/meta.ts
+  sed -i -E "s,( authorUrl = ).+,\1\"$HELLO_AUTHOR_URL\";,g" src/meta.ts
   spin build
   sed -E 's,/?target/,,g' spin.toml >target/spin.toml
 }
@@ -38,6 +43,8 @@ function release {
       --label "org.opencontainers.image.revision=$HELLO_REVISION" \
       --label "org.opencontainers.image.description=$HELLO_DESCRIPTION" \
       --label "org.opencontainers.image.licenses=$HELLO_LICENSE" \
+      --label "org.opencontainers.image.vendor=$HELLO_VENDOR" \
+      --label "org.opencontainers.image.authors=$HELLO_AUTHOR_NAME" \
       -t "$image" \
       .
     docker push "$image"
@@ -49,6 +56,8 @@ function release {
       --annotation "org.opencontainers.image.revision=$HELLO_REVISION" \
       --annotation "org.opencontainers.image.description=$HELLO_DESCRIPTION" \
       --annotation "org.opencontainers.image.licenses=$HELLO_LICENSE" \
+      --annotation "org.opencontainers.image.vendor=$HELLO_VENDOR" \
+      --annotation "org.opencontainers.image.authors=$HELLO_AUTHOR_NAME" \
       "$image"
   fi
 

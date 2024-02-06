@@ -8,7 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Rui Lopes <rgl@ruilopes.com>",
+  "author": {
+    "name": "Rui Lopes",
+    "url": "https://ruilopes.com"
+  },
   "license": "ISC",
   "devDependencies": {
     "ts-loader": "^9.5.1",

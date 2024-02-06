@@ -1,5 +1,5 @@
 import { HandleRequest, HttpRequest, HttpResponse } from "@fermyon/spin-sdk";
-import { version, revision, sourceUrl } from "./meta";
+import { sourceUrl, version, revision, authorName, authorUrl } from "./meta";
 
 const encoder = new TextEncoder();
 
@@ -64,7 +64,7 @@ export const handleRequest: HandleRequest = async (request: HttpRequest): Promis
   <body>
     <div>
       <p>Hello, World!</p>
-      <p class="version">v${version}+${revision}<br/><a href="${sourceUrl}">${sourceUrl}</a></p>
+      <p class="version">v${version}+${revision}<br/><a href="${sourceUrl}">${sourceUrl}</a><br>by <a href="${authorUrl}">${authorName}</a></p>
     </div>
   </body>
 </html>

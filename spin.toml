@@ -1,15 +1,18 @@
-spin_manifest_version = "1"
+spin_manifest_version = 2
+
+[application]
 authors = ["Rui Lopes <rgl@ruilopes.com>"]
 description = "Example Spin HTTP Application written in TypeScript"
 name = "spin-http-ts-example"
-trigger = { type = "http", base = "/" }
-version = "0.3.0"
+version = "0.4.0"
 
-[[component]]
-id = "spin-http-ts-example"
+[[trigger.http]]
+route = "/..."
+component = "spin-http-ts-example"
+
+[component.spin-http-ts-example]
 source = "target/spin-http-ts-example.wasm"
 exclude_files = ["**/node_modules"]
-[component.trigger]
-route = "/..."
-[component.build]
+[component.spin-http-ts-example.build]
 command = "npm run build"
+watch = ["src/**/*.ts", "package.json"]

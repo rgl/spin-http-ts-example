@@ -1,38 +1,34 @@
-import { HandleRequest, HttpRequest, HttpResponse } from "@fermyon/spin-sdk";
+import { ResponseBuilder } from "@fermyon/spin-sdk";
 import { sourceUrl, version, revision, authorName, authorUrl } from "./meta";
 
-const encoder = new TextEncoder();
-
-function text(status: number, text: string): HttpResponse {
-  return {
-    status: status,
-    headers: {
-      "Content-Type": "text/plain",
-    },
-    body: encoder.encode(text).buffer,
-  };
+function text(response: ResponseBuilder, status: number, text: string) {
+  response.status(status);
+  response.set({
+    "Content-Type": "text/plain",
+  });
+  response.send(text);
 }
 
-function html(status: number, html: string): HttpResponse {
-  return {
-    status: status,
-    headers: {
-      "Content-Type": "text/html",
-    },
-    body: encoder.encode(html).buffer,
-  };
+function html(response: ResponseBuilder, status: number, html: string) {
+  response.status(status);
+  response.set({
+    "Content-Type": "text/html",
+  });
+  response.send(html);
 }
 
-export const handleRequest: HandleRequest = async (request: HttpRequest): Promise<HttpResponse> => {
-  console.log(`client ${request.headers["spin-client-addr"]}: ${request.method} ${request.headers["spin-full-url"]}`);
-  const uri = new URL(request.uri);
+export async function handler(request: Request, response: ResponseBuilder) {
+  console.log(`client ${request.headers.get("spin-client-addr")}: ${request.method} ${request.headers.get("spin-full-url")}`);
+  const uri = new URL(request.url);
   if (uri.pathname != "/") {
-    return text(404, "Not Found.");
+    text(response, 404, "Not Found.");
+    return;
   }
   if (request.method != "GET" && request.method != "HEAD") {
-    return text(405, "Not Allowed.");
+    text(response, 405, "Not Allowed.");
+    return;
   }
-  return html(200, `<!DOCTYPE html>
+  html(response, 200, `<!DOCTYPE html>
 <html>
   <head>
     <title>Hello, World!</title>

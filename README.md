@@ -6,7 +6,7 @@ Example Spin HTTP Application written in TypeScript.
 
 # Usage
 
-Install [Node.js](https://github.com/nodejs/node), [Spin](https://github.com/fermyon/spin) and the [TypeScript plugin](https://github.com/fermyon/spin-js-sdk).
+Install [Node.js](https://github.com/nodejs/node) and [Spin](https://github.com/fermyon/spin).
 
 Install the dependencies:
 
@@ -43,7 +43,7 @@ Fermyon Cloud.
 
 ## Kubernetes Usage
 
-See https://developer.fermyon.com/spin/v2/kubernetes.
+See https://developer.fermyon.com/spin/v3/kubernetes.
 
 ## containerd Usage
 
@@ -62,7 +62,7 @@ Use `crictl`:
 # see https://github.com/kubernetes-sigs/cri-tools/blob/master/cmd/crictl/container.go
 # see https://github.com/kubernetes/cri-api/blob/kubernetes-1.27.10/pkg/apis/runtime/v1/api.proto
 crictl pull \
-  ghcr.io/rgl/spin-http-ts-example:0.3.0
+  ghcr.io/rgl/spin-http-ts-example:0.4.0
 crictl images list
 crictl info | jq .config.containerd.runtimes
 install -d -m 700 /var/log/cri
@@ -77,7 +77,7 @@ cat >cri-spin-http-ts-example.web.ctr.yml <<'EOF'
 metadata:
   name: web
 image:
-  image: ghcr.io/rgl/spin-http-ts-example:0.3.0
+  image: ghcr.io/rgl/spin-http-ts-example:0.4.0
 command:
   - /
 log_path: web.log
@@ -110,13 +110,13 @@ Use `ctr`:
 
 ```bash
 ctr image pull \
-  ghcr.io/rgl/spin-http-ts-example:0.3.0
+  ghcr.io/rgl/spin-http-ts-example:0.4.0
 ctr images list
 ctr run \
   --detach \
   --runtime io.containerd.spin.v2 \
   --net-host \
-  ghcr.io/rgl/spin-http-ts-example:0.3.0 \
+  ghcr.io/rgl/spin-http-ts-example:0.4.0 \
   ctr-spin-http-ts-example
 ctr sandboxes list # aka pods.
 ctr containers list
@@ -128,6 +128,6 @@ ctr container rm ctr-spin-http-ts-example
 * [Spin JS/TS SDK](https://github.com/fermyon/spin-js-sdk)
 * [Spin JS/TS SDK Examples](https://github.com/fermyon/spin-js-sdk/tree/main/examples)
 * [Spin JS/TS @fermyon/spin-sdk NPM package](https://www.npmjs.com/package/@fermyon/spin-sdk)
-* [Building Spin Components in JavaScript](https://developer.fermyon.com/spin/v2/javascript-components)
+* [Building Spin Components in JavaScript](https://developer.fermyon.com/spin/v3/javascript-components)
 * [Done icon](https://icons8.com/icon/uw-X2j32n7Xp/done)
 * [Creating a container image](https://github.com/deislabs/containerd-wasm-shims/blob/main/containerd-shim-spin/quickstart.md#creating-a-container-image)

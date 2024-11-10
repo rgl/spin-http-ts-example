@@ -10,12 +10,11 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22.x'
       - name: Setup spin
         uses: fermyon/actions/spin/setup@v1
         with:
-          version: v2.1.0
-          plugins: js2wasm
+          version: v3.0.0
       - name: Install build dependencies
         run: ./build.sh dependencies
       - name: Build
@@ -40,7 +39,7 @@ jobs:
       - name: Setup spin
         uses: fermyon/actions/spin/setup@v1
         with:
-          version: v2.1.0
+          version: v3.0.0
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:

@@ -1,4 +1,6 @@
 .spin/
 node_modules/
-dist/
+combined-wit/
 target/
+dist/
+dist.js
